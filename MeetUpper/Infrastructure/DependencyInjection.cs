@@ -1,6 +1,8 @@
-﻿using System.Reflection.Metadata;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Email;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,10 @@ namespace Infrastructure
                     m => m.MigrationsAssembly(typeof(MeetUpperDbContext).Assembly.GetName().FullName)));
             services.AddHostedService<Migrator>();
             services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<MeetUpperDbContext>();
+            services.AddScoped<IEmailSender, EmailService>();
+            var smtp = new SmtpConfiguration();
+            conf.GetSection(key:"SMTP").Bind(smtp);
+            services.AddSingleton(smtp);
             return services;
         }
     }
