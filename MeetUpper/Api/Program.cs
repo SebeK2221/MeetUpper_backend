@@ -2,7 +2,7 @@ using Domain.Entities;
 using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddOptions();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
