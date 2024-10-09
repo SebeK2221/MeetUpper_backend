@@ -18,11 +18,10 @@ namespace Infrastructure
                     m => m.MigrationsAssembly(typeof(MeetUpperDbContext).Assembly.GetName().FullName)));
             services.AddHostedService<Migrator>();
             services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<MeetUpperDbContext>();
-            services.AddScoped<IEmailSender, EmailSender>();
-            // var smtp = new SmtpConfiguration();
-            // conf.GetSection(key:"SMTP").Bind(smtp);
-            // services.AddSingleton(smtp);
-            services.Configure<SmtpConfiguration>(conf.GetSection("SMTP"));
+            services.AddScoped<IEmailSender, EmailService>();
+            var smtp = new SmtpConfiguration();
+            conf.GetSection(key:"SMTP").Bind(smtp);
+            services.AddSingleton(smtp);
             return services;
         }
     }
