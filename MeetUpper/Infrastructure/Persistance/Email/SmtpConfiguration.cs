@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Infrastructure.Persistence.Email;
+namespace Infrastructure.Persistance.Email;
 
 public class SmtpConfiguration
 {

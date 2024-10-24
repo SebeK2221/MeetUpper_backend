@@ -1,13 +1,11 @@
-using System.Net.Mail;
-using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using Infrastructure.Persistance.Email;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using MimeKit;
 using MimeKit.Text;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 
-namespace Infrastructure.Persistence.Email;
+namespace Infrastructure.Persistance.Email;
 
 public class EmailService : IEmailSender
 {

@@ -1,8 +1,9 @@
+using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Infrastructure.Persistence;
+namespace Infrastructure.Persistance;
 
 public class Migrator : IHostedService
 {
