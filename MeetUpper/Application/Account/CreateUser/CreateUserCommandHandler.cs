@@ -1,4 +1,5 @@
 using Application.Account.Response;
+using Application.Account.SendConfirmEmail;
 using Application.Persistance.Interfaces;
 using Domain.Entities;
 using MediatR;
@@ -27,7 +28,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand,Create
             PhoneNumber = request.PhoneNumber
         };
         var userId = await _userRepository.CreateUserAsync(user, request.Password,cancellationToken);
-        
+        await _mediator.Send(new SendConfirmEmailCommand(userId), cancellationToken);
         return new CreateUserResponse(message: "Utworzono użytkownika");
     }
 }

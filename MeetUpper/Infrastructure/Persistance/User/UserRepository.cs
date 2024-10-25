@@ -33,7 +33,7 @@ public class UserRepository:IUserRepository
         return user.Id;
     }
 
-    public async Task<Domain.Entities.User> GetUserByEmailAsync(string email)
+    public async Task<Domain.Entities.User> GetUserByEmailAsync(string email,CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -44,7 +44,7 @@ public class UserRepository:IUserRepository
         return user;
     }
 
-    public async Task<Domain.Entities.User> GetUserByIdAsync(Guid id)
+    public async Task<Domain.Entities.User> GetUserByIdAsync(Guid id,CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(id.ToString());
         if (user == null)
@@ -55,9 +55,8 @@ public class UserRepository:IUserRepository
         return user;
     }
 
-    public async Task<string> GenerateConfirmEmailTokenAsync(Guid id)
+    public async Task<string> GenerateConfirmEmailTokenAsync(Domain.Entities.User user,CancellationToken cancellationToken)
     {
-        var user = await GetUserByIdAsync(id);
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         return token;
     }
