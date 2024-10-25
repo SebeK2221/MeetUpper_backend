@@ -21,7 +21,7 @@ public class UserRepository:IUserRepository
         var isUserEmailExists = await _userManager.Users.AnyAsync(x => x.Email == user.Email, cancellationToken);
         if (isUserEmailExists == true)
         {
-            throw new Exception($"Użytkonik o takim mailu już istnieje");
+            throw new Exception($"Użytkownik o takim mailu już istnieje");
         }
 
         var createUser = await _userManager.CreateAsync(user, password);
@@ -38,7 +38,7 @@ public class UserRepository:IUserRepository
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            throw new Exception($"Nie znaleziono użytkonika");
+            throw new Exception($"Nie znaleziono użytkownika");
         }
 
         return user;
