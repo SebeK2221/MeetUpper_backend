@@ -60,4 +60,14 @@ public class UserRepository:IUserRepository
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         return token;
     }
+
+    public async Task ConfirmUserEmail(Guid id, string token, CancellationToken cancellationToken)
+    {
+        var user = await GetUserByIdAsync(id, cancellationToken);
+        var confirm = await _userManager.ConfirmEmailAsync(user, token);
+        if (!confirm.Succeeded)
+        {
+            throw new Exception("Użytkownik o takim mailu nie istnieje");
+        }
+    }
 }

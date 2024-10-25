@@ -9,4 +9,5 @@ public interface IUserRepository
     Task<User> GetUserByEmailAsync(string email,CancellationToken cancellationToken);
     Task<User> GetUserByIdAsync(Guid id,CancellationToken cancellationToken);
     Task<string> GenerateConfirmEmailTokenAsync(User user,CancellationToken cancellationToken);
+    Task ConfirmUserEmail(Guid id, string token, CancellationToken cancellationToken);
 }
