@@ -18,8 +18,8 @@ public class SendConfirmEmailCommandHandler:IRequestHandler<SendConfirmEmailComm
     {
         var userToConfirm = await _userRepository.GetUserByIdAsync(request.UserId,cancellationToken);
         var tokenToConfirmUserEmail = await _userRepository.GenerateConfirmEmailTokenAsync(userToConfirm,cancellationToken);
-        
-        var message = "sds" + tokenToConfirmUserEmail;
+        var link = $"<a href=http://localhost:5000/confirm-email?token={tokenToConfirmUserEmail}&userId={userToConfirm.Id}>Kliknij tutaj</a>";
+        var message = "Link potwierdzający adres email" + link;
         await _emailSender.SendEmailAsync(userToConfirm.Email, "Kliknij w link aby aktywować konto", message);
     }
 }

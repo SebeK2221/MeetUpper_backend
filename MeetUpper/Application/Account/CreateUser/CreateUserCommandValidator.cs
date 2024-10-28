@@ -19,5 +19,8 @@ public class CreateUserCommandValidator:AbstractValidator<CreateUserCommand>
             .Matches(@"(?=.*\d.*\d?)").WithMessage("Hasło musi zawierać cyfrę")
             .Matches(@"(?=.*[\$%&@#].*[\$%&@#]?)").WithMessage("Hasło musi zawierać znak alfanumeryczny")
             .MinimumLength(8).WithMessage("Hasło musi zawierać minimum 8 znaków");
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("Adres email nie może być pusty")
+            .EmailAddress().WithMessage("Podaj poprawny adres email");
     }
 }

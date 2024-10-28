@@ -1,3 +1,4 @@
+using Application.Account.ConfirmUserEmail;
 using Application.Account.CreateUser;
 using Application.Account.SignIn;
 using MediatR;
@@ -26,6 +27,14 @@ namespace Api.Controllers
 
         [HttpPost("sing-in")]
         public async Task<IActionResult> SignIn(SignInCommand command, CancellationToken cancellationToken)
+        {
+            var res = await _mediator.Send(command, cancellationToken);
+            return Ok(res);
+        }
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmUserEmail(ConfirmUserEmailCommand command,
+            CancellationToken cancellationToken)
         {
             var res = await _mediator.Send(command, cancellationToken);
             return Ok(res);
