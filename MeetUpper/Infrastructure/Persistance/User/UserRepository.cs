@@ -77,4 +77,14 @@ public class UserRepository:IUserRepository
         var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         return resetPasswordToken;
     }
+
+    public async Task ResetPasswordForgot(Guid id, string token, string password, CancellationToken cancellationToken)
+    {
+        var user = await GetUserByIdAsync(id, cancellationToken);
+        var changePassword=await _userManager.ResetPasswordAsync(user, token, password);
+        if (!changePassword.Succeeded)
+        {
+            throw new Exception("Nie udało się zmienić hasła");
+        }
+    }
 }
