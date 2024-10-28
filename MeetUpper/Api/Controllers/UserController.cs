@@ -1,5 +1,6 @@
 using Application.Account.ConfirmUserEmail;
 using Application.Account.CreateUser;
+using Application.Account.SendResetPasswordEmail_Forgot_Password_;
 using Application.Account.SignIn;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,14 @@ namespace Api.Controllers
 
         [HttpPost("confirm-email")]
         public async Task<IActionResult> ConfirmUserEmail(ConfirmUserEmailCommand command,
+            CancellationToken cancellationToken)
+        {
+            var res = await _mediator.Send(command, cancellationToken);
+            return Ok(res);
+        }
+        
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> SendResetPasswordEmaill(SendResetPasswordCommand command,
             CancellationToken cancellationToken)
         {
             var res = await _mediator.Send(command, cancellationToken);

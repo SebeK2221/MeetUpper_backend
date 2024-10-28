@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<User> GetUserByIdAsync(Guid id,CancellationToken cancellationToken);
     Task<string> GenerateConfirmEmailTokenAsync(User user,CancellationToken cancellationToken);
     Task ConfirmUserEmail(Guid id, string token, CancellationToken cancellationToken);
+    Task<string> GenerateResetPasswordTokenAsync(string email, CancellationToken cancellationToken);
 }

@@ -70,4 +70,11 @@ public class UserRepository:IUserRepository
             throw new Exception("Użytkownik o takim mailu nie istnieje");
         }
     }
+
+    public async Task<string> GenerateResetPasswordTokenAsync(string email, CancellationToken cancellationToken)
+    {
+        var user = await GetUserByEmailAsync(email, cancellationToken);
+        var resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        return resetPasswordToken;
+    }
 }
