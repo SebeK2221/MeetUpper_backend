@@ -14,6 +14,9 @@ public class ResetPasswordLoggedCommandHandler:IRequestHandler<ResetPasswordLogg
     }
     public async Task<ResetPasswordLoggedResponse> Handle(ResetPasswordLoggedCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _userRepository.CheckPasswordAsync(request.UserId, request.OldPassword, cancellationToken);
+        await _userRepository.ResetPasswordLogged(request.UserId, request.OldPassword, request.NewPassword,
+            cancellationToken);
+        return new ResetPasswordLoggedResponse("Hasło zostało pomyślnie zmienione");
     }
 }

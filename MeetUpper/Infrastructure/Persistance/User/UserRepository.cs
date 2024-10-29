@@ -97,4 +97,14 @@ public class UserRepository:IUserRepository
             throw new Exception("Nie udało się zmienić hasła");
         }
     }
+
+    public async Task CheckPasswordAsync(Guid id, string password, CancellationToken cancellationToken)
+    {
+        var user = await GetUserByIdAsync(id, cancellationToken);
+        var checkPassword = await _userManager.CheckPasswordAsync(user, password);
+        if (checkPassword is false)
+        {
+            throw new Exception("Podano niepoprawne hasło");
+        }
+    }
 }

@@ -13,4 +13,5 @@ public interface IUserRepository
     Task<string> GenerateResetPasswordTokenAsync(string email, CancellationToken cancellationToken);
     Task ResetPasswordForgot(Guid id, string token, string password, CancellationToken cancellationToken);
     Task ResetPasswordLogged(Guid id, string oldPassword, string newPassword, CancellationToken cancellationToken);
+    Task CheckPasswordAsync(Guid id, string password, CancellationToken cancellationToken);
 }

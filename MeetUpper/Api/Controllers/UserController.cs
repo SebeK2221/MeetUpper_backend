@@ -1,6 +1,7 @@
 using Application.Account.ConfirmUserEmail;
 using Application.Account.CreateUser;
 using Application.Account.ResetPasswordForget;
+using Application.Account.ResetPasswordLogged;
 using Application.Account.SendResetPasswordEmail_Forgot_Password_;
 using Application.Account.SignIn;
 using MediatR;
@@ -52,6 +53,14 @@ namespace Api.Controllers
 
         [HttpPost("reset-forgotten-password")]
         public async Task<IActionResult> ResetForgottenPassword(ResetPasswordForgetCommand command,
+            CancellationToken cancellationToken)
+        {
+            var res = await _mediator.Send(command, cancellationToken);
+            return Ok(res);
+        }
+
+        [HttpPost("reset-logged-password")]
+        public async Task<IActionResult> ResetLoggedPassword(ResetPasswordLoggedCommand command,
             CancellationToken cancellationToken)
         {
             var res = await _mediator.Send(command, cancellationToken);
