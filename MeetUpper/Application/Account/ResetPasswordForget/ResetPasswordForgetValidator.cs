@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Application.Account.ResetPassword;
+namespace Application.Account.ResetPasswordForget;
 
 public class ResetPasswordForgetValidator:AbstractValidator<ResetPasswordForgetCommand>
 {

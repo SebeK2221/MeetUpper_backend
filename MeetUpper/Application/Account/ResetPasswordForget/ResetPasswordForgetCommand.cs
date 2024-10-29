@@ -1,8 +1,7 @@
 using Application.Account.Response;
-using Domain.Entities;
 using MediatR;
 
-namespace Application.Account.ResetPassword;
+namespace Application.Account.ResetPasswordForget;
 
 public record ResetPasswordForgetCommand(
     Guid UserId,

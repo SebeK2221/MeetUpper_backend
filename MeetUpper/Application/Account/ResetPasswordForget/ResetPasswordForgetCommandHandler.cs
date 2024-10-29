@@ -2,7 +2,7 @@ using Application.Account.Response;
 using Application.Persistance.Interfaces;
 using MediatR;
 
-namespace Application.Account.ResetPassword;
+namespace Application.Account.ResetPasswordForget;
 
 public class ResetPasswordForgetCommandHandler:IRequestHandler<ResetPasswordForgetCommand,ResetPasswordForgetResponse>
 {

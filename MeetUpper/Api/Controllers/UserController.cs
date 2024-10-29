@@ -1,6 +1,6 @@
 using Application.Account.ConfirmUserEmail;
 using Application.Account.CreateUser;
-using Application.Account.ResetPassword;
+using Application.Account.ResetPasswordForget;
 using Application.Account.SendResetPasswordEmail_Forgot_Password_;
 using Application.Account.SignIn;
 using MediatR;

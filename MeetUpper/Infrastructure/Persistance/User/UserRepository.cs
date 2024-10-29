@@ -87,4 +87,14 @@ public class UserRepository:IUserRepository
             throw new Exception("Nie udało się zmienić hasła");
         }
     }
+
+    public async Task ResetPasswordLogged(Guid id, string oldPassword, string newPassword, CancellationToken cancellationToken)
+    {
+        var user = await GetUserByIdAsync(id, cancellationToken);
+        var changePassword = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        if (!changePassword.Succeeded)
+        {
+            throw new Exception("Nie udało się zmienić hasła");
+        }
+    }
 }
