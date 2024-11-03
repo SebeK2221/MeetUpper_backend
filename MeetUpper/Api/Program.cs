@@ -1,3 +1,4 @@
+using Api.Exceptions;
 using Application;
 using Domain.Entities;
 using Infrastructure;
@@ -12,7 +13,9 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services
     .AddCors()
     .AddAplication()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration)
+    .AddExceptionHandler<ExceptionHandler>();
+
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -22,6 +25,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+app.UseExceptionHandler(_ => {});
 app.UseCors();
 app.MapControllers();
 app.Run();

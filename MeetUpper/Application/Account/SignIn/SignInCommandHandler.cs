@@ -21,6 +21,7 @@ public class SignInCommandHandler:IRequestHandler<SignInCommand,CreateUserRespon
 
     public async Task<CreateUserResponse> Handle(SignInCommand command, CancellationToken cancellationToken)
     {
+        await _userRepository.test("123");
         return new CreateUserResponse("test");
     }
 }

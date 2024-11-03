@@ -1,4 +1,6 @@
+using System.Net;
 using Application.Persistance.Interfaces;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Exception = System.Exception;
@@ -106,5 +108,10 @@ public class UserRepository:IUserRepository
         {
             throw new Exception("Podano niepoprawne hasło");
         }
+    }
+
+    public async Task test(string pass)
+    {
+        throw new BadRequestException("działa");
     }
 }
