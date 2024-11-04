@@ -22,15 +22,25 @@ public class ExceptionHandler:IExceptionHandler
     {
         var response = exception switch
         {
-            NotFoundException apiException => new ErrorResponse
+            NotFoundException notFoundException => new ErrorResponse
             {
-                StatusCode = apiException.StatusCode,
-                Message = apiException.Message,
+                StatusCode = notFoundException.StatusCode,
+                Message = notFoundException.Message,
             },
             BadRequestException badRequestException => new ErrorResponse()
             {
                 StatusCode = badRequestException.StatusCode,
                 Message = badRequestException.Message,
+            },
+            InvalidCredentialsException invalidCredentialsException => new ErrorResponse()
+            {
+                StatusCode = invalidCredentialsException.StatusCode,
+                Message = invalidCredentialsException.Message,
+            },
+            ConflictException conflictException => new ErrorResponse()
+            {
+                StatusCode = conflictException.StatusCode,
+                Message = conflictException.Message,
             },
             _ => new ErrorResponse()
             {
