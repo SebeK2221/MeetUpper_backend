@@ -1,4 +1,7 @@
+using System.Net;
+using System.Security.Authentication;
 using Application.Persistance.Interfaces;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Exception = System.Exception;
@@ -21,7 +24,7 @@ public class UserRepository:IUserRepository
         var isUserEmailExists = await _userManager.Users.AnyAsync(x => x.Email == user.Email, cancellationToken);
         if (isUserEmailExists == true)
         {
-            throw new Exception($"Użytkownik o takim mailu już istnieje");
+            throw new ConflictException($"Użytkownik o takim mailu już istnieje");
         }
 
         var createUser = await _userManager.CreateAsync(user, password);
@@ -38,7 +41,7 @@ public class UserRepository:IUserRepository
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
-            throw new Exception($"Nie znaleziono użytkownika");
+            throw new NotFoundException($"Nie znaleziono użytkownika");
         }
 
         return user;
@@ -49,7 +52,7 @@ public class UserRepository:IUserRepository
         var user = await _userManager.FindByIdAsync(id.ToString());
         if (user == null)
         {
-            throw new Exception($"Nie znaleziono użytkonika");
+            throw new NotFoundException($"Nie znaleziono użytkonika");
         }
 
         return user;
@@ -67,7 +70,7 @@ public class UserRepository:IUserRepository
         var confirm = await _userManager.ConfirmEmailAsync(user, token);
         if (!confirm.Succeeded)
         {
-            throw new Exception("Użytkownik o takim mailu nie istnieje");
+            throw new BadRequestException("Nie udało się potwierdzić maila");
         }
     }
 
@@ -84,17 +87,18 @@ public class UserRepository:IUserRepository
         var changePassword=await _userManager.ResetPasswordAsync(user, token, password);
         if (!changePassword.Succeeded)
         {
-            throw new Exception("Nie udało się zmienić hasła");
+            throw new BadRequestException("Nie udało się zmienić hasła");
         }
     }
 
     public async Task ResetPasswordLogged(Guid id, string oldPassword, string newPassword, CancellationToken cancellationToken)
     {
         var user = await GetUserByIdAsync(id, cancellationToken);
+        await CheckPasswordAsync(user.Id, oldPassword, cancellationToken);
         var changePassword = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
         if (!changePassword.Succeeded)
         {
-            throw new Exception("Nie udało się zmienić hasła");
+            throw new BadRequestException("Nie udało się zmienić hasła");
         }
     }
 
@@ -104,7 +108,12 @@ public class UserRepository:IUserRepository
         var checkPassword = await _userManager.CheckPasswordAsync(user, password);
         if (checkPassword is false)
         {
-            throw new Exception("Podano niepoprawne hasło");
+            throw new InvalidCredentialException("Podano niepoprawne hasło");
         }
+    }
+
+    public async Task test(string pass)
+    {
+        throw new BadRequestException("działa");
     }
 }

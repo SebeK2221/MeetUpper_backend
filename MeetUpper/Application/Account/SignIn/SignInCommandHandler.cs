@@ -19,8 +19,9 @@ public class SignInCommandHandler:IRequestHandler<SignInCommand,CreateUserRespon
         _signInManager = signInManager;
     }
 
-    public async Task<CreateUserResponse> Handle(SignInCommand command, CancellationToken cancellationToken)
+    public async Task<CreateUserResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
+        await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
         return new CreateUserResponse("test");
     }
 }
