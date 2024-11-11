@@ -1,9 +1,14 @@
 using System.Net;
 using System.Security.Authentication;
+using System.Security.Claims;
+using System.Text;
 using Application.Persistance.Interfaces;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
 using Exception = System.Exception;
 
 namespace Infrastructure.Persistance.User;
@@ -12,11 +17,40 @@ public class UserRepository:IUserRepository
 {
     private readonly MeetUpperDbContext _context;
     private readonly UserManager<Domain.Entities.User> _userManager;
+    private readonly IConfiguration _configuration;
 
-    public UserRepository(MeetUpperDbContext context,UserManager<Domain.Entities.User> userManager)
+    public UserRepository(MeetUpperDbContext context,UserManager<Domain.Entities.User> userManager, IConfiguration configuration)
     {
         _context = context;
         _userManager = userManager;
+        _configuration = configuration;
+    }
+    
+    public async Task<string> GenerateTokenAsync(Domain.Entities.User user, CancellationToken cancellationToken)
+    {
+        var secretKey = _configuration["Jwt:Secret"];
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+        
+        var claims = new ClaimsIdentity(
+        [
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim("email_confirmed", user.EmailConfirmed.ToString())
+        ]);
+
+        var now = DateTime.UtcNow;
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = claims,
+            Expires = now.AddMinutes(_configuration.GetValue<int>("Jwt:ExpiresInMinutes")),
+            SigningCredentials = credentials,
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"]
+        };
+        var handler = new JsonWebTokenHandler();
+        var token = handler.CreateToken(tokenDescriptor);
+        return token;
     }
     
     public async Task<Guid> CreateUserAsync (Domain.Entities.User user, string password, CancellationToken cancellationToken)
@@ -111,6 +145,7 @@ public class UserRepository:IUserRepository
             throw new InvalidCredentialException("Podano niepoprawne hasło");
         }
     }
+    
 
     public async Task test(string pass)
     {
