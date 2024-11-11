@@ -21,7 +21,9 @@ public class SignInCommandHandler:IRequestHandler<SignInCommand,CreateUserRespon
 
     public async Task<CreateUserResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
     {
-        await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
-        return new CreateUserResponse("test");
+        var user = await _userRepository.GetUserByEmailAsync(request.Email, cancellationToken);
+        await _userRepository.CheckPasswordAsync(user.Id, request.Password, cancellationToken);
+        var token = _userRepository.GenerateTokenAsync(user);
+        return new CreateUserResponse(await token);
     }
 }

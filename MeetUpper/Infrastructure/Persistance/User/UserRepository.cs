@@ -26,7 +26,7 @@ public class UserRepository:IUserRepository
         _configuration = configuration;
     }
     
-    public async Task<string> GenerateTokenAsync(Domain.Entities.User user, CancellationToken cancellationToken)
+    public async Task<string> GenerateTokenAsync(Domain.Entities.User user)
     {
         var secretKey = _configuration["Jwt:Secret"];
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
